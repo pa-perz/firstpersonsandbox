@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://cckm8e0skhxdw"]
+
+[ext_resource type="Script" uid="uid://mseh7inc6qwp" path="res://entities/interactables/types/Food.gd" id="1_kgb0q"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_kgb0q"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_3wabp"]
+points = PackedVector3Array(0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5)
+
+[node name="TestFood" type="RigidBody3D"]
+script = ExtResource("1_kgb0q")
+food_name = "Test Food"
+heal_value = 15.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_kgb0q")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("ConvexPolygonShape3D_3wabp")

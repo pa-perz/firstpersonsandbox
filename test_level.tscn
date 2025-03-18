@@ -1,0 +1,57 @@
+[gd_scene load_steps=10 format=3 uid="uid://c8o7qb4hiwsuk"]
+
+[ext_resource type="Texture2D" uid="uid://dnrt1gbc8318j" path="res://assets/textures/grid_texture.png" id="1_1c2mv"]
+[ext_resource type="PackedScene" uid="uid://bd2ukfousggd4" path="res://entities/player/player.tscn" id="1_gojnm"]
+[ext_resource type="PackedScene" uid="uid://cckm8e0skhxdw" path="res://entities/interactables/TestFood.tscn" id="3_f7g2b"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1c2mv"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_f7g2b"]
+sky_material = SubResource("ProceduralSkyMaterial_1c2mv")
+
+[sub_resource type="Environment" id="Environment_4ptq8"]
+background_mode = 2
+sky = SubResource("Sky_f7g2b")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1c2mv"]
+albedo_texture = ExtResource("1_1c2mv")
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_f7g2b"]
+material = SubResource("StandardMaterial3D_1c2mv")
+size = Vector3(50, 1, 50)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_4ptq8"]
+points = PackedVector3Array(-25, -0.5, -25, -25, 0.5, -25, 25, -0.5, -25, -25, -0.5, 25, -25, 0.5, 25, 25, 0.5, -25, 25, -0.5, 25, 25, 0.5, 25)
+
+[node name="TestLevel" type="Node3D"]
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_4ptq8")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("1_gojnm")]
+
+[node name="Level" type="Node3D" parent="."]
+
+[node name="Ground" type="StaticBody3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/Ground"]
+mesh = SubResource("BoxMesh_f7g2b")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Ground"]
+shape = SubResource("ConvexPolygonShape3D_4ptq8")
+
+[node name="TestFood" parent="." instance=ExtResource("3_f7g2b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.59049, 0.0999998, -2.26282)
+collision_layer = 2

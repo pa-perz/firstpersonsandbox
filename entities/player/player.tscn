@@ -1,0 +1,123 @@
+[gd_scene load_steps=16 format=3 uid="uid://bd2ukfousggd4"]
+
+[ext_resource type="Script" uid="uid://bccydj02n808w" path="res://entities/player/Player.gd" id="1_4flbx"]
+[ext_resource type="Script" uid="uid://1y1oom40iwvl" path="res://entities/player/movement/PlayerMovementSM.gd" id="2_abrql"]
+[ext_resource type="Script" uid="uid://caq2hcitl1ehb" path="res://entities/player/PlayerStats.gd" id="2_bectd"]
+[ext_resource type="Script" uid="uid://njii6ied1gb6" path="res://entities/player/movement/Idle.gd" id="3_qiwj3"]
+[ext_resource type="Script" uid="uid://bsjo7vercahhk" path="res://entities/player/movement/Walk.gd" id="4_26q78"]
+[ext_resource type="Script" uid="uid://dyynnyv3yol81" path="res://entities/player/movement/Jump.gd" id="5_bectd"]
+[ext_resource type="Script" uid="uid://wrqt8y6txg6v" path="res://entities/player/movement/Run.gd" id="6_wvtmh"]
+[ext_resource type="Script" uid="uid://ha4q5i2epv8a" path="res://entities/player/movement/Air.gd" id="7_7thud"]
+[ext_resource type="Script" uid="uid://f2ut0xgt8bqs" path="res://entities/player/interaction/PlayerInteractionSM.gd" id="9_a1qjk"]
+[ext_resource type="Script" uid="uid://boyad452gunbe" path="res://entities/player/interaction/Idle.gd" id="10_7thud"]
+[ext_resource type="Script" uid="uid://cscf3rpp7jxxt" path="res://entities/player/interaction/List.gd" id="10_a1qjk"]
+[ext_resource type="Script" uid="uid://umsokacqps1m" path="res://ui/InteractionPanel.gd" id="10_wvtmh"]
+[ext_resource type="Script" uid="uid://dlr2fvktosaju" path="res://entities/player/interaction/Grab.gd" id="11_j3ovn"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sb12i"]
+height = 1.7
+
+[sub_resource type="LabelSettings" id="LabelSettings_j3ovn"]
+font_size = 32
+font_color = Color(0, 1, 0, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera_controller")]
+script = ExtResource("1_4flbx")
+camera_controller = NodePath("CameraHolder")
+
+[node name="PlayerStats" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_bectd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+shape = SubResource("CapsuleShape3D_sb12i")
+
+[node name="CameraHolder" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+
+[node name="PlayerCamera" type="Camera3D" parent="CameraHolder"]
+fov = 80.0
+
+[node name="InteractionRaycast" type="RayCast3D" parent="CameraHolder/PlayerCamera"]
+unique_name_in_owner = true
+target_position = Vector3(0, 0, -2)
+collision_mask = 2
+
+[node name="MovementSM" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_abrql")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="MovementSM"]
+script = ExtResource("3_qiwj3")
+
+[node name="Walk" type="Node" parent="MovementSM"]
+script = ExtResource("4_26q78")
+
+[node name="Jump" type="Node" parent="MovementSM"]
+script = ExtResource("5_bectd")
+
+[node name="Run" type="Node" parent="MovementSM"]
+script = ExtResource("6_wvtmh")
+
+[node name="Air" type="Node" parent="MovementSM"]
+script = ExtResource("7_7thud")
+
+[node name="InteractionSM" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("9_a1qjk")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="InteractionSM"]
+script = ExtResource("10_7thud")
+
+[node name="Grab" type="Node" parent="InteractionSM"]
+script = ExtResource("11_j3ovn")
+
+[node name="List" type="Node" parent="InteractionSM"]
+script = ExtResource("10_a1qjk")
+
+[node name="UserInterface" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="InteractionPanel" type="PanelContainer" parent="UserInterface"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("10_wvtmh")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UserInterface/InteractionPanel"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HealthLabel" type="Label" parent="UserInterface"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 40.0
+grow_vertical = 0
+label_settings = SubResource("LabelSettings_j3ovn")
+uppercase = true
