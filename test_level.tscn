@@ -14,6 +14,8 @@ sky_material = SubResource("ProceduralSkyMaterial_1c2mv")
 [sub_resource type="Environment" id="Environment_4ptq8"]
 background_mode = 2
 sky = SubResource("Sky_f7g2b")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
 tonemap_mode = 2
 glow_enabled = true
 
@@ -35,10 +37,6 @@ points = PackedVector3Array(-25, -0.5, -25, -25, 0.5, -25, 25, -0.5, -25, -25, -
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
 environment = SubResource("Environment_4ptq8")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
-transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
-shadow_enabled = true
-
 [node name="Player" parent="." instance=ExtResource("1_gojnm")]
 
 [node name="Level" type="Node3D" parent="."]
@@ -53,5 +51,5 @@ mesh = SubResource("BoxMesh_f7g2b")
 shape = SubResource("ConvexPolygonShape3D_4ptq8")
 
 [node name="TestFood" parent="." instance=ExtResource("3_f7g2b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.59049, 0.0999998, -2.26282)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.59049, 1.1, -4.26282)
 collision_layer = 2
